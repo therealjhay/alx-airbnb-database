@@ -1,4 +1,4 @@
--- Initial Query: Retrieve all bookings with user, property, and payment details
+-- Initial Query: Retrieve all bookings with user, property, and payment details, filtered to recent, confirmed bookings over $200
 SELECT 
     Booking.booking_id,
     Booking.start_date,
@@ -17,34 +17,28 @@ FROM Booking
 JOIN "User" ON Booking.user_id = "User".user_id
 JOIN Property ON Booking.property_id = Property.property_id
 LEFT JOIN Payment ON Payment.booking_id = Booking.booking_id
+WHERE Booking.status = 'confirmed'
+  AND Payment.amount > 200
 ORDER BY Booking.start_date DESC;
 
--- Analyze this original query with:
--- EXPLAIN ANALYZE
--- [Paste the query above, then study the cost, rows, node type, and sequential/index scan usage]
+-- Analyze with:
+-- EXPLAIN ANALYZE ...
+--
+-- This query only returns confirmed bookings with payments above $200,
+-- demonstrating WHERE and AND to further optimize filtering before joins.
 
--- Refactored/Optimized Query:
-
--- Ensure indexes exist for Booking.user_id, Booking.property_id, Payment.booking_id:
--- CREATE INDEX IF NOT EXISTS idx_booking_user_id ON Booking(user_id);
--- CREATE INDEX IF NOT EXISTS idx_booking_property_id ON Booking(property_id);
--- CREATE INDEX IF NOT EXISTS idx_payment_booking_id ON Payment(booking_id);
-
--- If only summary information or specific columns are needed, reduce the SELECT fields.
-
--- Optimized Query Example (same as above, but can further limit columns/filter if needed).
+-- Refactored/Optimized Query Example
+-- (select only needed columns and use indexed fields for WHERE)
 SELECT 
     Booking.booking_id,
     Booking.start_date,
-    Booking.end_date,
-    Booking.status,
     "User".first_name,
-    "User".last_name,
     Property.name AS property_name,
-    Payment.amount,
-    Payment.payment_method
+    Payment.amount
 FROM Booking
 JOIN "User" ON Booking.user_id = "User".user_id
 JOIN Property ON Booking.property_id = Property.property_id
 LEFT JOIN Payment ON Payment.booking_id = Booking.booking_id
+WHERE Booking.status = 'confirmed'
+  AND Payment.amount > 200
 ORDER BY Booking.start_date DESC;

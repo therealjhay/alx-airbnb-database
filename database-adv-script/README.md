@@ -61,3 +61,33 @@ This module demonstrates both non-correlated and correlated subqueries within th
 
 ---
 
+# Aggregations and Window Functions 
+
+## Overview
+
+This module demonstrates SQL aggregation techniques using COUNT and GROUP BY, as well as advanced analytics with window functions (RANK) on the Airbnb database.
+
+---
+
+## Included Queries
+
+1. **Total Bookings Per User**  
+   Calculates the number of bookings for each user using `COUNT()` and `GROUP BY`. All users are included (even those with zero bookings).
+
+2. **Property Ranking by Bookings**  
+   Lists all properties, counts the number of bookings, and ranks them using the `RANK()` window function so that ties receive the same rank.
+
+---
+
+## Usage
+
+- Run these queries in your SQL client (e.g., psql, DBeaver) after loading the schema and seed data.
+- Review results to identify booking trends and top-performing properties.
+
+## Learning Objectives
+
+- Apply group-based aggregation with COUNT and GROUP BY
+- Use window functions to rank or number results for analytical reports
+
+---
+
